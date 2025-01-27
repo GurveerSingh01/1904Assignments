@@ -5,7 +5,7 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-public class PieStat
+public class PieData
 {
     public static void main (String[] args) throws FileNotFoundException
     {
@@ -14,8 +14,8 @@ public class PieStat
         Scanner kb=new Scanner(System.in);
         
         int count=0;
-        //StringBuilder result= new StringBuilder();
         
+        String summaryResult="";
         //Scanner line = new Scanner(f.nextLine()); 
         //System.out.println(f.next());
 
@@ -42,7 +42,12 @@ public class PieStat
         calculateRank(weightedScore,count,ranks);
 
         System.out.println("PPEA Individual Statistics \n*********************************\n");
-        displaySummary(names,bib,pieTimes,pieVolumes,count, avgTime,avgVol,weightedScore,ranks);
+        
+        
+        summaryResult= displaySummary(names,bib,pieTimes,pieVolumes,count, avgTime,avgVol,weightedScore,ranks);
+         System.out.print(summaryResult);
+         
+         
         System.out.println("\n******* Edit Records*******");
         System.out.println("\nChoose an option:\nA - Add a score\nB - Quit");
         String option=kb.next();
@@ -68,7 +73,11 @@ public class PieStat
             String optionEdit=kb.next();
             addScore(optionEdit,validIndex,pieTimes,count,avgTime,avgVol,weightedScore,ranks,pieVolumes,kb);
 
-            displaySummary(names,bib,pieTimes,pieVolumes,count, avgTime,avgVol,weightedScore,ranks);
+
+           summaryResult= displaySummary(names,bib,pieTimes,pieVolumes,count, avgTime,avgVol,weightedScore,ranks);
+           System.out.println(summaryResult);
+          
+          
             System.out.println("****************************************************");
             System.out.println("\nChoose an option:\nA - Add a score\nB - Quit");
             option=kb.next();
@@ -235,15 +244,18 @@ public class PieStat
 
     }
 
-    public static void displaySummary(String names[],int bib[], int pieTimes[][],int pieVolumes[][], int count, double avgTime[],double avgVol[],double weightedScore[],int ranks[])
+    public static String displaySummary(String names[],int bib[], int pieTimes[][],int pieVolumes[][], int count, double avgTime[],double avgVol[],double weightedScore[],int ranks[])
     {
         int x1=0;
-        System.out.println("Name\tBib#\tAvgTime\tV1\tV2\tV3\tAvgVol\tScore\tRank");
+        StringBuilder result= new StringBuilder();
+       
+        //System.out.println("Name\tBib#\tAvgTime\tV1\tV2\tV3\tAvgVol\tScore\tRank");
+        result.append("Name\tBib#\tAvgTime\tV1\tV2\tV3\tAvgVol\tScore\tRank\n");
         while(x1<count)
         {
-            System.out.print(names[x1]+"\t");
-            System.out.print(+bib[x1]+"\t");
-            System.out.print(String.format("%.2f", avgTime[x1])+"\t");
+             result.append(names[x1]+"\t");
+             result.append(+bib[x1]+"\t");
+             result.append(String.format("%.2f", avgTime[x1])+"\t");
 
             /**for(int j=7;j<10;j++)
             {
@@ -252,16 +264,17 @@ public class PieStat
              */
             for(int j=0;j<3;j++)
             {
-                System.out.print(pieVolumes[x1][j]+"\t");
+                 result.append(pieVolumes[x1][j]+"\t");
             }
 
-            System.out.print(String.format("%.2f",avgVol[x1])+"\t");
-            System.out.print(String.format("%.2f", weightedScore[x1])+"\t");
-            System.out.print( ranks[x1]+"\t");
+            result.append(String.format("%.2f",avgVol[x1])+"\t");
+             result.append(String.format("%.2f", weightedScore[x1])+"\t");
+             result.append( ranks[x1]+"\t");
 
-            System.out.println();
+            result.append("\n");
             x1++;
         }
+        return result.toString();
 
     }
 
